@@ -1,0 +1,11 @@
+{
+  "name": "view-wonder",
+  "version": "1.0.0",
+  "description": "A website for viewing movies amongst other functions",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "author": "Kenechukwu Nwosu",
+  "license": "ISC"
+}
