@@ -7,12 +7,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500&family=Teko:wght@300&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree&family=Inter:wght@500&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="index.css" />
-    <script type="module" src="./src/js/controller.js"></script>
+    <!-- <script type="module" src="./src/js/controller.js"></script> -->
     <title>View Wonder</title>
+    <link rel="icon" type="image/x-icon" href="./src/img/favicon-16x16.png" />
   </head>
   <body>
     <nav class="navbar">
@@ -26,25 +27,170 @@
     </nav>
 
     <div class="container"></div>
-    <!-- <div class="movie__page--container">
-      <div class="movie__page--card">
-        <div class="movie__page--title">FIGHT CLUB</div>
-        <img
-          class="movie__page--image"
-          src="https://image.tmdb.org/t/p/w500/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg"
-          alt=""
-        />
+    <div class="movie__page--container">
+      <div class="movie__page">
+        <a href="#"
+          ><button class="movie__page--button back__button">
+            <img
+              class="movie__page--button-icon"
+              src="./src/img/arrow.png"
+              alt=""
+            />
+            Back
+          </button></a
+        >
+        <h1 class="movie__page--title">FIGHT CLUB</h1>
+        <div class="movie__page--main">
+          <img
+            class="movie__page--image"
+            src="https://image.tmdb.org/t/p/w500/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg"
+            alt=""
+          />
+          <div class="movie__page-main--details">
+            <img
+              class="movie__page--backdrop"
+              src="https://image.tmdb.org/t/p/w500/hZkgoQYus5vegHoetLkCJzb17zJ.jpg"
+              alt="Fight Club Still"
+            />
+            <div class="movie__page--summary">
+              <div class="movie__page--summary-left">
+                <h2 class="movie__page--heading">Movie Summary</h2>
+                <p class="movie__summary--text">
+                  A ticking-time-bomb insomniac and a slippery soap salesman
+                  channel primal male aggression into a shocking new form of
+                  therapy. Their concept catches on, with underground "fight
+                  clubs" forming in every town, until an eccentric gets in the
+                  way and ignites an out-of-control spiral toward oblivion.
+                </p>
+                <p class="movie__page--genres">
+                  Genre(s): Action, Thriller, Crime film, Dark comedy, Drama
+                </p>
+              </div>
+              <div class="movie__page--watch movie__page--summary-right">
+                <h2 class="movie__page--heading">Watch</h2>
+                <a class="movie__page--watch-logo" href="#"
+                  ><img src="./src/img/prime.png" alt="Prime Video Logo"
+                /></a>
+                <a class="movie__page--watch-logo" href="#"
+                  ><img src="./src/img/netflix.png" alt="Netflix Logo"
+                /></a>
+                <a class="movie__page--watch-logo" href="#"
+                  ><img src="./src/img/hbo.png" alt="HBO Max Logo"
+                /></a>
+                <a class="movie__page--watch-logo" href="#"
+                  ><img src="./src/img/hbo.png" alt="HBO Max Logo"
+                /></a>
+                <div class="movie__page--buttons">
+                  <a
+                    href="http://www.foxmovies.com/movies/fight-club"
+                    target="_blank"
+                    ><button class="movie__page--button">
+                      Website
+                      <img
+                        class="movie__page--button-icon"
+                        src="./src/img/globe.png"
+                        alt="globe icon"
+                      /></button
+                  ></a>
+                  <a href="#"
+                    ><button class="movie__page--button">
+                      Trailer
+                      <img
+                        class="movie__page--button-icon"
+                        src="./src/img/film.png"
+                        alt="film icon"
+                      /></button
+                  ></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="movie__page--misc">
+          <div class="movie__page--more-info">
+            <h2 class="movie__page--heading">More Info</h2>
+            <ul>
+              <li class="more__info--list-item">Director: David Finch</li>
+              <li class="more__info--list-item">
+                Release Date: 15th October 1999
+              </li>
+              <li class="more__info--list-item">Runtime: 139 mins</li>
+              <li class="more__info--list-item">Budget: $63,000,000</li>
+              <li class="more__info--list-item">Revenue: $100,853,753</li>
+            </ul>
+          </div>
+          <div class="movie__page--cast">
+            <h2 class="movie__page--heading">Main Cast</h2>
+            <div class="movie__page--cast-members">
+              <div class="movie__page--cast-member">
+                <img
+                  class="movie__page--cast-image"
+                  src="https://image.tmdb.org/t/p/w200/oTB9vGIBacH5aQNS0pUM74QSWuf.jpg"
+                  alt="Image of actor, Brad Pitt"
+                />
+                <h3 class="movie__page--cast-name">Brad Pitt</h3>
+              </div>
+              <div class="movie__page--cast-member">
+                <img
+                  class="movie__page--cast-image"
+                  src="https://image.tmdb.org/t/p/w200/5XBzD5WuTyVQZeS4VI25z2moMeY.jpg"
+                  alt="Image of actor, Edward Norton"
+                />
+                <h3 class="movie__page--cast-name">Edward Norton</h3>
+              </div>
+              <div class="movie__page--cast-member">
+                <img
+                  class="movie__page--cast-image"
+                  src="https://image.tmdb.org/t/p/w200/DDeITcCpnBd0CkAIRPhggy9bt5.jpg"
+                  alt="Image of actor, Helena Bonham Carter"
+                />
+                <h3 class="movie__page--cast-name">Helena Bonham Carter</h3>
+              </div>
+              <div class="movie__page--cast-member">
+                <img
+                  class="movie__page--cast-image"
+                  src="https://image.tmdb.org/t/p/w200/oTB9vGIBacH5aQNS0pUM74QSWuf.jpg"
+                  alt="Image of actor, Brad Pitt"
+                />
+                <h3 class="movie__page--cast-name">Brad Pitt</h3>
+              </div>
+              <div class="movie__page--cast-member">
+                <img
+                  class="movie__page--cast-image"
+                  src="https://image.tmdb.org/t/p/w200/5XBzD5WuTyVQZeS4VI25z2moMeY.jpg"
+                  alt="Image of actor, Edward Norton"
+                />
+                <h3 class="movie__page--cast-name">Edward Norton</h3>
+              </div>
+              <div class="movie__page--cast-member">
+                <img
+                  class="movie__page--cast-image"
+                  src="https://image.tmdb.org/t/p/w200/DDeITcCpnBd0CkAIRPhggy9bt5.jpg"
+                  alt="Image of actor, Helena Bonham Carter"
+                />
+                <h3 class="movie__page--cast-name">Helena Bonham Carter</h3>
+              </div>
+              <div class="movie__page--cast-member">
+                <img
+                  class="movie__page--cast-image"
+                  src="https://image.tmdb.org/t/p/w200/5XBzD5WuTyVQZeS4VI25z2moMeY.jpg"
+                  alt="Image of actor, Edward Norton"
+                />
+                <h3 class="movie__page--cast-name">Edward Norton</h3>
+              </div>
+              <div class="movie__page--cast-member">
+                <img
+                  class="movie__page--cast-image"
+                  src="https://image.tmdb.org/t/p/w200/5XBzD5WuTyVQZeS4VI25z2moMeY.jpg"
+                  alt="Image of actor, Edward Norton"
+                />
+                <h3 class="movie__page--cast-name">Edward Norton</h3>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="overview">
-        <h1 class="overview__title">MOVIE OVERVIEW</h1>
-        <p class="overview__summary">
-          "A ticking-time-bomb insomniac and a slippery soap salesman channel
-          primal male aggression into a shocking new form of therapy. Their
-          concept catches on, with underground "fight clubs" forming in every
-          town, until an eccentric gets in the way and ignites an out-of-control
-          spiral toward oblivion."
-        </p>
-      </div>
-    </div> -->
+      <div></div>
+    </div>
   </body>
 </html>
