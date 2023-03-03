@@ -5,8 +5,8 @@ export default class View {
     this._data = data;
 
     const html = this._generateMarkup(section);
-    this.scrollToTop();
     this._parentEl.insertAdjacentHTML("afterbegin", html);
+    this.scrollToTop();
   }
 
   clear() {
@@ -14,6 +14,9 @@ export default class View {
   }
 
   scrollToTop() {
-    window.scrollTo(0, 0);
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   }
 }

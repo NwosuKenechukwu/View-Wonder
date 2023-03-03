@@ -9,7 +9,7 @@ import paginationView from "./paginationView";
 // GO BACK TO PREVIOUS PAGE USING HISTORY API (E.G window.history)
 // CHECK IT OUT ON MDN
 
-class MoviesPageView extends View {
+export default class ContentPageView extends View {
   _parentEl = document.querySelector(".content__page--container");
 
   _generateMovieCast(data) {
@@ -51,8 +51,7 @@ class MoviesPageView extends View {
 
   // Generate movie recommdations markup
   _generateRecommendations(movie) {
-    console.log(movie);
-    const recommendations = movie.recommendations.movies;
+    const recommendations = movie.recommendations.results;
     const data = recommendations
       .map((recommendation) => {
         if (!recommendation) return "";
@@ -103,7 +102,6 @@ class MoviesPageView extends View {
   }
 
   _generateMarkup() {
-    console.log(this._data);
     return `
     <div class="content__page">
       <a href="#" class="back__button--container">
@@ -131,7 +129,11 @@ class MoviesPageView extends View {
             <div class="content__page--summary-left">
               <h2 class="content__page--heading">Movie Summary</h2>
               <p class="content__summary--text">
-              ${this._data.summary}
+              ${
+                !this._data.summary
+                  ? "No summary available"
+                  : this._data.summary
+              }
               </p>
               <p class="content__page--genres">
                 Genre(s): ${
@@ -215,7 +217,7 @@ class MoviesPageView extends View {
       </div>
       <div class="content__page--recommendations">
         ${
-          this._data.recommendations.movies.length === 0
+          this._data.recommendations.contents.length === 0
             ? ""
             : `<h1 class="content__page--heading">Recommendations based on ${this._data.name}</h1>`
         }
@@ -227,7 +229,7 @@ class MoviesPageView extends View {
   ${
     this._data.recommendations.total_pages < 2
       ? ""
-      : paginationView.generateMarkup(this._data.recommendations)
+      : paginationView.generateMarkup(this._data.recommendations, "recommended")
   }
 
     `;
@@ -239,5 +241,3 @@ class MoviesPageView extends View {
     );
   }
 }
-
-export default new MoviesPageView();

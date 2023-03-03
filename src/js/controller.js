@@ -1,52 +1,63 @@
 import * as model from "./model.js";
-import moviesPageView from "./views/moviesPageView.js";
-import moviesHomeView from "./views/moviesHomeView.js";
 import paginationView from "./views/paginationView.js";
-
+import tvShowsHomeView from "./views/tvShowsHomeView.js";
+import movieHomeView from "./views/movieHomeView.js";
+import moviePageView from "./views/moviePageView.js";
 const controlContentHome = async function () {
   await model.getTrending();
-
-  moviesHomeView.render(model.movie.search.trending);
-};
-
-const controlContentPage = async function () {
-  const hash = window.location.hash.slice(1);
-  const movie = await model.getMovie(hash);
-
-  moviesHomeView.clear();
-  moviesPageView.clear();
-  moviesPageView.render(movie);
+  movieHomeView.render(model.movie.search.trending);
   paginationView.addHandlerClick(controlPagination);
 };
 
-const getPaginationData = async function (section = "") {
-  if (section === "recommended") await model.getRecommended();
-  moviesPageView.r;
+const controlContentPage = async function () {
+  if (window.location.hash === "") {
+    clearContent();
+    movieHomeView.render(model.movie.search.trending);
+    return;
+  }
+  const hash = window.location.hash.slice(1);
+  const movie = await model.getMovie(hash);
+  clearContent();
+  moviePageView.render(movie);
+  paginationView.addHandlerClick(controlPagination);
 };
 
-const controlPagination = async function (page, contentType, extraDataType) {
+const controlPagination = async function (page, extraDataType) {
   clearContent();
   if (extraDataType.toLowerCase() === "trending") {
     await model.getTrending(page);
-    moviesHomeView.render(model.movie.search.trending);
+    movieHomeView.render(model.movie.search.trending);
   }
 
   if (extraDataType.toLowerCase() === "recommended") {
-    await model.getRecommended(page);
-    moviesPageView.render(model.movie.search.recommended);
+    await model.getRecommended(model.movie.search.recommended.id, page);
+    moviePageView.render(model.movie.search.recommended);
   }
   paginationView.addHandlerClick(controlPagination);
 };
 
 const clearContent = function () {
-  moviesHomeView.clear();
+  movieHomeView.clear();
+  moviePageView.clear();
 };
 
 const init = async function () {
   await controlContentHome();
 
-  moviesPageView.addHandlerRender(controlContentPage);
-  paginationView.addHandlerClick(controlPagination);
+  window.addEventListener("mousedown", async function (e) {
+    setTimeout(() => {
+      if (e.button === 3 && window.location.hash === "") {
+        this.window.history.back;
+        clearContent();
+        movieHomeView.render(model.movie.search.trending);
+        paginationView.addHandlerClick(controlPagination);
+      }
+    }, 700);
+  });
+
+  // document.querySelector(".navbar__next--content")
+
+  moviePageView.addHandlerRender(controlContentPage);
 };
 
 init();

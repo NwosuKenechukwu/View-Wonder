@@ -6,33 +6,39 @@ class PaginationView extends View {
 
   addHandlerClick(handler) {
     this._parentEl = document.querySelector(".pagination");
+    if (!this._parentEl) return;
     this._parentEl.addEventListener("click", function (e) {
       e.preventDefault();
       const btnClick = e.target.closest(".content__page--button");
 
+      const extraDataType = document
+        .querySelector(".pagination")
+        .classList.contains("trending")
+        ? "trending"
+        : "recommended";
+
       if (!btnClick) return;
 
       const currPage = +btnClick.dataset.goto;
-      console.log(currPage);
-      handler(currPage);
+
+      handler(currPage, extraDataType);
     });
   }
 
-  generateMarkup(data) {
+  generateMarkup(data, extraDataType) {
     const currPage = data.page;
     const pages = data.total_pages;
-    console.log(currPage, pages);
 
     if (pages <= 1)
       return `
-        <div class="pagination only__page">
+        <div class="pagination ${extraDataType} only__page">
           <p class="current__page">${currPage}</p>
         </div>
         `;
 
     if (currPage === 1 && pages > 1) {
       return `
-        <div class="pagination first__page">
+        <div class="pagination ${extraDataType} first__page">
           <p class="current__page current__page--first">${currPage}</p>
           <button class="next__page content__page--button" data-goto="${
             currPage + 1
@@ -45,7 +51,7 @@ class PaginationView extends View {
 
     if (currPage !== 1 && pages > 1 && currPage !== pages) {
       return `
-        <div class="pagination">
+        <div class="pagination ${extraDataType}">
           <button class="previous__page content__page--button" data-goto="${
             currPage - 1
           }">
@@ -63,7 +69,7 @@ class PaginationView extends View {
 
     if (pages > 1 && currPage === pages) {
       return `
-        <div class="pagination last__page">
+        <div class="pagination ${extraDataType} last__page">
           <button class="previous__page content__page--button" data-goto="${
             currPage - 1
           }">
