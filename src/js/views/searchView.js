@@ -1,8 +1,23 @@
+import ContentHomeView from "./contentHomeView";
 import paginationView from "./paginationView";
-import View from "./view";
+import missing from "../../img/missing-img.svg";
 
-export default class ContentHomeView extends View {
-  _parentEl = document.querySelector(".content__home--container");
+const searchField = document.querySelector(".content__search");
+const searchButton = document.querySelector(".content__search--submit");
+let currPage = document.querySelector(".next__content--text");
+
+class SearchView extends ContentHomeView {
+  addListener(handler) {
+    searchButton.addEventListener("click", function () {
+      const query = searchField.value;
+      currPage = document.querySelector(".next__content--text");
+      const contentType = currPage.classList.contains("next__content--tv")
+        ? "tv"
+        : "movie";
+
+      handler(query, 1, contentType);
+    });
+  }
 
   _generateHeader(pageHeader = "") {
     return `
@@ -17,7 +32,9 @@ export default class ContentHomeView extends View {
         <div class="content__card--title">${content.name}</div>
         <img
           class="content__card--image"
-          src="${content.image}" alt=""/>
+          src="${
+            content.image.slice(-4) === "null" ? missing : content.image
+          }" alt=""/>
       </div>
     </a>
     `;
@@ -37,15 +54,17 @@ export default class ContentHomeView extends View {
       ${contentCards}
       </div>
     </div>
-    ${paginationView.generateMarkup(this._data, "trending")}
+    ${paginationView.generateMarkup(this._data, "search")}
     `;
     return html;
   }
 
   _generateMarkup() {
     const html = this._generateSectionMarkup(
-      `Trending ${this._data.contentType === "movie" ? "Movies" : "TV Shows"}`
+      `Search results for ${this._data.query}`
     );
     return html;
   }
 }
+
+export default new SearchView();

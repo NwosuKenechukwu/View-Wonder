@@ -187,7 +187,7 @@ h6 {
   border: none;
   font-family: var(--heading-font);
   padding: 0.7rem;
-  width: 10rem;
+  width: 13rem;
   border-radius: 2rem;
 }
 
@@ -238,6 +238,7 @@ h6 {
 /* ------------------------ CONTENT STYLING ------------------------ */
 
 .section__title {
+  font-family: var(--heading-font);
   color: var(--dark-color);
   text-align: center;
   margin: 2rem 0 1rem 0;
@@ -327,6 +328,10 @@ h6 {
 
 .back__button:hover > img {
   transform: translateX(-0.3rem);
+}
+
+.back__button--tv {
+  width: 10.6rem;
 }
 
 .content__page--title {

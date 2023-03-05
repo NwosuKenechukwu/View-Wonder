@@ -11,11 +11,15 @@ class PaginationView extends View {
       e.preventDefault();
       const btnClick = e.target.closest(".content__page--button");
 
-      const extraDataType = document
-        .querySelector(".pagination")
-        .classList.contains("trending")
-        ? "trending"
-        : "recommended";
+      let extraDataType;
+      if (document.querySelector(".pagination").classList.contains("trending"))
+        extraDataType = "trending";
+      if (
+        document.querySelector(".pagination").classList.contains("recommended")
+      )
+        extraDataType = "recommended";
+      if (document.querySelector(".pagination").classList.contains("search"))
+        extraDataType = "search";
 
       if (!btnClick) return;
 
@@ -79,6 +83,10 @@ class PaginationView extends View {
         </div>
       `;
     }
+  }
+
+  getContentType() {
+    return this._data.contentType;
   }
 }
 

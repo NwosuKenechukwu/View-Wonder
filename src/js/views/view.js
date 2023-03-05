@@ -1,10 +1,12 @@
 export default class View {
   _data;
 
-  render(data, section = "") {
+  setData(data) {
     this._data = data;
+  }
 
-    const html = this._generateMarkup(section);
+  render() {
+    const html = this._generateMarkup();
     this._parentEl.insertAdjacentHTML("afterbegin", html);
     this.scrollToTop();
   }

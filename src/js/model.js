@@ -1,20 +1,16 @@
 import { API_KEY } from "./config.js";
 
 export const movie = {
-  search: {
-    trending: {},
-    recommended: {},
-    query: "",
-  },
+  trending: {},
+  recommended: {},
 };
 
 export const tvShow = {
-  search: {
-    trending: {},
-    recommended: {},
-    query: "",
-  },
+  trending: {},
+  recommended: {},
 };
+
+export const search = {};
 
 const createBasicMovieObject = function (movie) {
   return {
@@ -45,15 +41,30 @@ const createBasicTvShowObject = function (show) {
       show.backdrop_path || show.poster_path
     }`,
     ...(show.genres && { genres: show.genres }),
-    ...(show.created_by?.[0].name && { createdBy: show.created_by }),
+    ...(show.created_by && { createdBy: show.created_by }),
+    ...(show.status && { status: show.status }),
     summary: show.overview,
-    firstAired: movie.first_air_date,
-    lastAired: movie.last_air_date,
+    firstAired: show.first_air_date,
+    lastAired: show.last_air_date,
     runtime: show.episode_run_time,
     numOfSeasons: show.number_of_seasons,
     ratingAvg: show.vote_average,
     ratingCount: show.vote_count,
-    website: show.website,
+    website: show.homepage,
+  };
+};
+
+const createSearchResult = function (result, contentType) {
+  if (contentType === "movie")
+    return {
+      id: result.id,
+      name: result.title,
+      image: `https://image.tmdb.org/t/p/w500${result.poster_path}`,
+    };
+  return {
+    id: result.id,
+    name: result.name,
+    image: `https://image.tmdb.org/t/p/w500${result.poster_path}`,
   };
 };
 
@@ -146,6 +157,8 @@ const fetchAdditionalTvShowData = async function (id) {
     const castJSON = await fetchCast.json();
     const actors = castJSON.cast.splice(0, 14);
     data.actors = actors;
+
+    return data;
   } catch (error) {
     console.error(error);
   }
@@ -171,37 +184,33 @@ export const getMovie = async function (id) {
       `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}`
     );
     const data = await res.json();
-    movie.search.recommended = await createMovieObject(data);
-    movie.search.recommended.contentType = "movie";
-    await getRecommended(id);
+    movie.recommended = await createMovieObject(data);
+    movie.recommended.contentType = "movie";
+    await getRecommended(id, 1, "movie");
 
-    return movie.search.recommended;
+    return movie.recommended;
   } catch (error) {
     console.error(error);
   }
 };
 
-const getTvShow = async function (id) {
+export const getTvShow = async function (id) {
   try {
     const res = await fetch(
       `https://api.themoviedb.org/3/tv/${id}?api_key=${API_KEY}`
     );
     const data = await res.json();
-    tvShow.search.recommended = await createTvShowObject(data);
-    tvShow.search.recommended.contentType = "tv";
-    await getRecommended(id);
+    tvShow.recommended = await createTvShowObject(data);
+    tvShow.recommended.contentType = "tv";
+    await getRecommended(id, 1, "tv");
 
-    return tvShow.search.recommended;
+    return tvShow.recommended;
   } catch (error) {
     console.error(error);
   }
 };
 
-export const getContents = async function (
-  url,
-  query = "",
-  contentType = "movie"
-) {
+export const getContents = async function (url, query = "", contentType) {
   const res = await fetch(url);
   const data = await res.json();
 
@@ -209,16 +218,18 @@ export const getContents = async function (
     const movies = await data.results.map((movie) =>
       createBasicMovieObject(movie)
     );
+
     if (query.toLowerCase() === "trending") {
-      movie.search.trending.contentType = "movie";
-      movie.search.trending.results = movies;
-      movie.search.trending.page = data.page;
-      movie.search.trending.total_pages = data.total_pages;
+      movie.trending.contentType = "movie";
+      movie.trending.results = movies;
+      movie.trending.page = data.page;
+      movie.trending.total_pages = data.total_pages;
     }
+
     if (query.toLowerCase() === "recommended") {
-      movie.search.recommended.recommendations.results = movies.slice(0, 20);
-      movie.search.recommended.recommendations.page = data.page;
-      movie.search.recommended.recommendations.total_pages = data.total_pages;
+      movie.recommended.recommendations.results = movies.slice(0, 20);
+      movie.recommended.recommendations.page = data.page;
+      movie.recommended.recommendations.total_pages = data.total_pages;
     }
   }
 
@@ -226,22 +237,37 @@ export const getContents = async function (
     const shows = await data.results.map((show) =>
       createBasicTvShowObject(show)
     );
-    console.log(shows);
+
     if (query.toLowerCase() === "trending") {
-      tvShow.search.trending.contentType = "tv";
-      tvShow.search.trending.results = shows;
-      tvShow.search.trending.page = data.page;
-      tvShow.search.trending.total_pages = data.total_pages;
+      tvShow.trending.contentType = "tv";
+      tvShow.trending.results = shows;
+      tvShow.trending.page = data.page;
+      tvShow.trending.total_pages = data.total_pages;
     }
+
     if (query.toLowerCase() === "recommended") {
-      tvShow.search.recommended.recommendations.results = shows.slice(0, 20);
-      tvShow.search.recommended.recommendations.page = data.page;
-      tvShow.search.recommended.recommendations.total_pages = data.total_pages;
+      tvShow.recommended.recommendations.results = shows.slice(0, 20);
+      tvShow.recommended.recommendations.page = data.page;
+      tvShow.recommended.recommendations.total_pages = data.total_pages;
     }
   }
 };
 
-export const getTrending = async function (page = 1, contentType = "tv") {
+export const getSearchContents = async function (url, query = "", contentType) {
+  const res = await fetch(url);
+  const data = await res.json();
+  const searchResults = await data.results.map((result) =>
+    createSearchResult(result, contentType)
+  );
+
+  (search.query = query), (search.contentType = contentType);
+  search.results = searchResults.slice(0, 20);
+  search.page = data.page;
+  search.total_pages = data.total_pages;
+  search.category = "search";
+};
+
+export const getTrending = async function (page = 1, contentType) {
   try {
     await getContents(
       `https://api.themoviedb.org/3/trending/${contentType}/week?api_key=${API_KEY}&page=${page}`,
@@ -253,11 +279,7 @@ export const getTrending = async function (page = 1, contentType = "tv") {
   }
 };
 
-export const getRecommended = async function (
-  id,
-  page = 1,
-  contentType = "movie"
-) {
+export const getRecommended = async function (id, page = 1, contentType) {
   try {
     await getContents(
       `https://api.themoviedb.org/3/${contentType}/${id}/recommendations?api_key=${API_KEY}&page=${page}`,
@@ -266,5 +288,21 @@ export const getRecommended = async function (
     );
   } catch (error) {
     console.error(error);
+  }
+};
+
+export const getSearchResults = async function (
+  query = "",
+  page = 1,
+  contentType
+) {
+  try {
+    await getSearchContents(
+      `https://api.themoviedb.org/3/search/${contentType}?api_key=${API_KEY}&query=${query}&page=${page}`,
+      query,
+      contentType
+    );
+  } catch (error) {
+    console.error(err);
   }
 };
