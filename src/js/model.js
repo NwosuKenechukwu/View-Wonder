@@ -69,9 +69,13 @@ const createSearchResult = function (result, contentType) {
 };
 
 const getCountry = async function () {
-  const getIP = await fetch("https://ipinfo.io/json?token=446d3b225413ee");
-  const ipJSON = await getIP.json();
-  return ipJSON.country;
+  try {
+    const getIP = await fetch("https://ipinfo.io/json?token=446d3b225413ee");
+    const ipJSON = await getIP.json();
+    return ipJSON.country;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const fetchAdditionalMovieData = async function (id) {
@@ -165,17 +169,25 @@ const fetchAdditionalTvShowData = async function (id) {
 };
 
 const createMovieObject = async function (movie) {
-  const additionalData = await fetchAdditionalMovieData(movie.id);
-  let data = createBasicMovieObject(movie);
-  data = Object.assign(data, additionalData);
-  return data;
+  try {
+    const additionalData = await fetchAdditionalMovieData(movie.id);
+    let data = createBasicMovieObject(movie);
+    data = Object.assign(data, additionalData);
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const createTvShowObject = async function (show) {
-  const additionalData = await fetchAdditionalTvShowData(show.id);
-  let data = createBasicTvShowObject(show);
-  data = Object.assign(data, additionalData);
-  return data;
+  try {
+    const additionalData = await fetchAdditionalTvShowData(show.id);
+    let data = createBasicTvShowObject(show);
+    data = Object.assign(data, additionalData);
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const getMovie = async function (id) {
@@ -211,60 +223,68 @@ export const getTvShow = async function (id) {
 };
 
 export const getContents = async function (url, query = "", contentType) {
-  const res = await fetch(url);
-  const data = await res.json();
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
 
-  if (contentType.toLowerCase() === "movie") {
-    const movies = await data.results.map((movie) =>
-      createBasicMovieObject(movie)
-    );
+    if (contentType.toLowerCase() === "movie") {
+      const movies = await data.results.map((movie) =>
+        createBasicMovieObject(movie)
+      );
 
-    if (query.toLowerCase() === "trending") {
-      movie.trending.contentType = "movie";
-      movie.trending.results = movies;
-      movie.trending.page = data.page;
-      movie.trending.total_pages = data.total_pages;
+      if (query.toLowerCase() === "trending") {
+        movie.trending.contentType = "movie";
+        movie.trending.results = movies;
+        movie.trending.page = data.page;
+        movie.trending.total_pages = data.total_pages;
+      }
+
+      if (query.toLowerCase() === "recommended") {
+        movie.recommended.recommendations.results = movies.slice(0, 20);
+        movie.recommended.recommendations.page = data.page;
+        movie.recommended.recommendations.total_pages = data.total_pages;
+      }
     }
 
-    if (query.toLowerCase() === "recommended") {
-      movie.recommended.recommendations.results = movies.slice(0, 20);
-      movie.recommended.recommendations.page = data.page;
-      movie.recommended.recommendations.total_pages = data.total_pages;
-    }
-  }
+    if (contentType.toLowerCase() === "tv") {
+      const shows = await data.results.map((show) =>
+        createBasicTvShowObject(show)
+      );
 
-  if (contentType.toLowerCase() === "tv") {
-    const shows = await data.results.map((show) =>
-      createBasicTvShowObject(show)
-    );
+      if (query.toLowerCase() === "trending") {
+        tvShow.trending.contentType = "tv";
+        tvShow.trending.results = shows;
+        tvShow.trending.page = data.page;
+        tvShow.trending.total_pages = data.total_pages;
+      }
 
-    if (query.toLowerCase() === "trending") {
-      tvShow.trending.contentType = "tv";
-      tvShow.trending.results = shows;
-      tvShow.trending.page = data.page;
-      tvShow.trending.total_pages = data.total_pages;
+      if (query.toLowerCase() === "recommended") {
+        tvShow.recommended.recommendations.results = shows.slice(0, 20);
+        tvShow.recommended.recommendations.page = data.page;
+        tvShow.recommended.recommendations.total_pages = data.total_pages;
+      }
     }
-
-    if (query.toLowerCase() === "recommended") {
-      tvShow.recommended.recommendations.results = shows.slice(0, 20);
-      tvShow.recommended.recommendations.page = data.page;
-      tvShow.recommended.recommendations.total_pages = data.total_pages;
-    }
+  } catch (error) {
+    console.error(error);
   }
 };
 
 export const getSearchContents = async function (url, query = "", contentType) {
-  const res = await fetch(url);
-  const data = await res.json();
-  const searchResults = await data.results.map((result) =>
-    createSearchResult(result, contentType)
-  );
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    const searchResults = await data.results.map((result) =>
+      createSearchResult(result, contentType)
+    );
 
-  (search.query = query), (search.contentType = contentType);
-  search.results = searchResults.slice(0, 20);
-  search.page = data.page;
-  search.total_pages = data.total_pages;
-  search.category = "search";
+    (search.query = query), (search.contentType = contentType);
+    search.results = searchResults.slice(0, 20);
+    search.page = data.page;
+    search.total_pages = data.total_pages;
+    search.category = "search";
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const getTrending = async function (page = 1, contentType) {

@@ -61,7 +61,7 @@ class SearchView extends ContentHomeView {
 
   _generateMarkup() {
     const html = this._generateSectionMarkup(
-      `Search results for ${this._data.query}`
+      `Search results for ${this._data.query.toLowerCase()}`
     );
     return html;
   }

@@ -26,6 +26,7 @@ export default class ContentPageView extends View {
               alt="Image of actor, ${actor.name}"
             />
             <h3 class="content__page--cast-name">${actor.name}</h3>
+           <span class="tooltip">${actor.name}</span>
           </div>
         `;
 
@@ -37,6 +38,7 @@ export default class ContentPageView extends View {
             alt="Image of actor, ${actor.name}"
           />
           <h3 class="content__page--cast-name">${actor.name}</h3>
+          <span class="tooltip">${actor.name}</span>
         </div>
       `;
       })

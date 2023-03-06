@@ -9,6 +9,9 @@ class MovieHomeView extends ContentHomeView {
         <span class="next__content--text next__content--movie">View TV Shows</span>
         <img src="${arrow}" alt=""/></a>
     `;
+
+    document.querySelector(".content__search").placeholder =
+      "Search for a Movie...";
   }
 }
 

@@ -491,7 +491,10 @@ h6 {
 }
 
 .content__page--cast-member {
-  margin: 0 1.1rem 1.5rem 0;
+  margin: 1rem 1.1rem 2.5rem 0;
+  transition: background-color 0.5s;
+  position: relative;
+  width: 7rem;
 }
 
 .content__page--cast-member:hover {
@@ -514,6 +517,25 @@ h6 {
   width: 6rem;
   height: 20%;
   overflow: hidden;
+}
+
+.tooltip {
+  display: block;
+  visibility: hidden;
+  opacity: 0;
+  font-size: var(--movie-page-body-font-size);
+  transition: opacity 0.7s;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.content__page--cast-member:hover > .tooltip {
+  visibility: visible;
+  opacity: 1;
+  position: absolute;
+  background-color: var(--dark-color);
+  padding: 0.5rem;
+  transform: translate(0rem, -15rem);
 }
 
 .content__page--recommendations {
