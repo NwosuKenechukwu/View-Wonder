@@ -6,7 +6,7 @@ class PaginationView extends View {
 
   addHandlerClick(handler) {
     this._parentEl = document.querySelector(".pagination");
-    if (!this._parentEl) return;
+    if (this._parentEl === null) return;
     this._parentEl.addEventListener("click", function (e) {
       e.preventDefault();
       const btnClick = e.target.closest(".content__page--button");
@@ -21,7 +21,7 @@ class PaginationView extends View {
       if (document.querySelector(".pagination").classList.contains("search"))
         extraDataType = "search";
 
-      if (!btnClick) return;
+      if (btnClick === null) return;
 
       const currPage = +btnClick.dataset.goto;
 
@@ -86,6 +86,7 @@ class PaginationView extends View {
   }
 
   getContentType() {
+    if (!this._data) return "movie";
     return this._data.contentType;
   }
 }

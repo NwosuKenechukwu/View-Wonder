@@ -54,7 +54,7 @@ class TvShowsPageView extends ContentPageView {
               </p>
             </div>
             <div class="content__page--watch content__page--summary-right">
-              <h2 class="content__page--heading">Watch</h2>
+              <h2 class="content__page--heading">Where to Watch</h2>
               ${this._generateWatchProviders(this._data)}
               <div class="content__page--buttons">
                 ${

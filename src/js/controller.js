@@ -125,7 +125,7 @@ const clearContent = function () {
 const init = async function () {
   try {
     let contentTypeForNav = "tv";
-
+    await model.getTrending(1, "movie");
     await controlContentHome();
     searchView.addListener(controlSearch);
 

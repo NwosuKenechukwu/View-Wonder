@@ -74,9 +74,14 @@ export default class ContentPageView extends View {
   _generateWatchProviders(movie) {
     const linkToTMDB = movie.watchProviders?.link;
     const providers = movie.watchProviders?.flatrate;
+    if (!providers && !linkToTMDB)
+      return `
+        <p class="after__streaming content__summary--text">No watch info available. Adblock might be causing this.</p>
+      `;
+
     if (!providers)
       return `
-          <p class="after__streaming">Not on any Streaming Services</p>
+          <p class="after__streaming content__summary--text">Not available on streaming platforms</p>
           ${
             !linkToTMDB
               ? ""

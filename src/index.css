@@ -399,12 +399,9 @@ h6 {
   border: var(--dark-color) 1px solid;
 }
 
-.content__page--buy {
-  display: flex;
-  justify-content: center;
-  margin-top: 2rem;
-  margin-right: 0 !important;
-  width: 14.6rem;
+.after__streaming:first-of-type {
+  width: 15rem;
+  margin-bottom: 0.8rem;
 }
 
 .content__page--summary-right {
